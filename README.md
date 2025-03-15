@@ -38,12 +38,14 @@ Step 5: Start the Django Development Server
 Run the Django development server:
 python manage.py runserver
 Visit http://127.0.0.1:8000/chatbot/ in your browser to start chatting with the AI.
+
+
 Create a Virtual Environment
-
 python3 -m venv myenv
-Activate the Virtual Environment
 
+Activate the Virtual Environment
 source myenv/bin/activate
+
 Install Django and OpenAI SDK
 pip install django openai
 
