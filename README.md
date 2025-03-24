@@ -5,11 +5,17 @@ This project is a Generative AI (GenAI) chatbot built using Django and the OpenA
 #Features
 
 -Generative AI (GenAI) powered chatbot using OpenAI's GPT-3.5 model.
+
 -Basic chat functionality using the OpenAI API.
+
 -Context-aware responses based on conversation history, allowing the chatbot to remember prior exchanges.
+
 -Simple frontend to interact with the chatbot, including a text input and display area for the conversation.
+
 -Django backend to handle API requests, manage user session data, and serve the chatbot page.
+
 -Memory Management: The chatbot stores up to 7 exchanges (14 messages: 7 user + 7 bot) to maintain conversation context.
+
 -Admin Interface to view and manage user chat history.
 
 <img width="849" alt="Screenshot 2025-03-24 at 11 20 46 AM" src="https://github.com/user-attachments/assets/8e31743b-3cbe-4751-85d6-0cffd46c851d" />
