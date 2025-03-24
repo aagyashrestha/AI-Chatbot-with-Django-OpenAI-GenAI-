@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -28,5 +28,167 @@
     <div id="chatbox" style="border:1px solid black; padding:10px; height:300px; overflow:auto;"></div>
     <input type="text" id="userInput" placeholder="Type your message...">
     <button onclick="sendMessage()">Send</button>
+</body>
+</html> {% endcomment %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot with Memory</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        #chatbox {
+            border: 1px solid #ccc;
+            padding: 15px;
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 18px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+        .user-message {
+            background-color: #e3f2fd;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .bot-message {
+            background-color: #f1f1f1;
+            align-self: flex-start;
+        }
+        .input-area {
+            display: flex;
+            margin-top: 10px;
+        }
+        #userInput {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .user-id-container {
+            margin-bottom: 15px;
+        }
+    </style>
+    <script>
+        // Generate a random user ID if not already set
+        function getUserId() {
+            let userId = localStorage.getItem('chatbot_user_id');
+            if (!userId) {
+                userId = 'user_' + Math.random().toString(36).substring(2, 10);
+                localStorage.setItem('chatbot_user_id', userId);
+            }
+            return userId;
+        }
+        
+        // Display the user ID on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('userId').textContent = getUserId();
+        });
+        
+        async function sendMessage() {
+            let userMessage = document.getElementById("userInput").value;
+            if (!userMessage.trim()) return;
+            
+            // Add user message to chat
+            const chatbox = document.getElementById("chatbox");
+            chatbox.innerHTML += `<div class="message user-message"><b>You:</b> ${userMessage}</div>`;
+            
+            // Clear input and scroll to bottom
+            document.getElementById("userInput").value = "";
+            chatbox.scrollTop = chatbox.scrollHeight;
+            
+            // Get the user ID
+            const userId = getUserId();
+            
+            // Show loading indicator
+            chatbox.innerHTML += `<div id="loading" class="message bot-message"><i>Thinking...</i></div>`;
+            chatbox.scrollTop = chatbox.scrollHeight;
+            
+            try {
+                let response = await fetch("/chatbot/chat/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ 
+                        user_id: userId,
+                        message: userMessage 
+                    })
+                });
+                
+                // Remove loading indicator
+                document.getElementById("loading").remove();
+                
+                if (response.ok) {
+                    let data = await response.json();
+                    chatbox.innerHTML += `<div class="message bot-message"><b>Bot:</b> ${data.reply}</div>`;
+                } else {
+                    chatbox.innerHTML += `<div class="message bot-message"><b>Error:</b> Failed to get response</div>`;
+                }
+                
+                // Scroll to bottom again after adding bot response
+                chatbox.scrollTop = chatbox.scrollHeight;
+            } catch (error) {
+                document.getElementById("loading").remove();
+                chatbox.innerHTML += `<div class="message bot-message"><b>Error:</b> ${error.message}</div>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+        }
+        
+        // Send message on Enter key
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('userInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="chat-container">
+        <h2>Chat with AI</h2>
+        <div class="user-id-container">
+            Your ID: <span id="userId"></span>
+        </div>
+        <div id="chatbox"></div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
 </body>
 </html>
