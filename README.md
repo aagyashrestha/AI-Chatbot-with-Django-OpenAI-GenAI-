@@ -16,7 +16,7 @@ This project is a Generative AI (GenAI) chatbot built using Django and the OpenA
 
 -Memory Management: The chatbot stores up to 7 exchanges (14 messages: 7 user + 7 bot) to maintain conversation context.
 
--Admin Interface to view and manage user chat history.
+-Conversation Limit: Once the user and bot have exchanged 7 messages (7 user + 7 bot), the chatbot will automatically trim the conversation history to the most recent exchanges to prevent excessive memory usage. This ensures the chatbot retains context within the memory limit and continues providing relevant, context-aware responses.
 
 <img width="849" alt="Screenshot 2025-03-24 at 11 20 46 AM" src="https://github.com/user-attachments/assets/8e31743b-3cbe-4751-85d6-0cffd46c851d" />
 
