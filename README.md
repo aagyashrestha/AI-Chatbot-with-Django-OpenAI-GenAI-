@@ -51,3 +51,4 @@ pip install django openai
 
 <img width="1469" alt="Screenshot 2025-03-15 at 10 49 08 PM" src="https://github.com/user-attachments/assets/8a18962c-03ca-4725-b355-ddcb0d1e69b4" />
 
+<img width="849" alt="Screenshot 2025-03-24 at 11 20 46 AM" src="https://github.com/user-attachments/assets/8e31743b-3cbe-4751-85d6-0cffd46c851d" />
